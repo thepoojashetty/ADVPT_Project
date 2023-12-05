@@ -5,7 +5,7 @@ stages:
 .read_dataset_images: &read_dataset_images
   - chmod +x read_dataset_images.sh
   - bash read_dataset_images.sh mnist-datasets/train-images.idx3-ubyte image_out.txt 0
-  - python3 compare_files.py image_out.txt expected_results/out-tensor-single-image.txt
+  - python3 compare_files.py image_out.txt expected-results/out-tensor-single-image.txt
 
 # test dataset label reader by checking generated outputs with expected results
 .read_dataset_labels: &read_dataset_labels
