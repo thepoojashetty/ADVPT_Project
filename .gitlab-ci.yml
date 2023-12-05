@@ -11,7 +11,7 @@ stages:
 .read_dataset_labels: &read_dataset_labels
   - chmod +x read_dataset_labels.sh
   - bash read_dataset_labels.sh mnist-datasets/train-labels.idx1-ubyte label_out.txt 0
-  - python3 compare_files.py label_out.txt expected-results/label_out_train-labels-0.txt
+  - python3 compare_files.py label_out.txt expected-results/out-tensor-single-label.txt
 
 # train and test neural network with MNIST dataset
 .mnist_single_image: &mnist_single_image
