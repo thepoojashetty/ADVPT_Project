@@ -39,6 +39,8 @@ Besides the shell scripts, we also have the following directories:
   Reference solution for the tensor assignment. We recommend you to use this implementation as central datastructure for
   image/label data, the weights and biases for your network, etc. Keep in mind that this implementation is **slow** and
   potentially needs improvements to overcome the time limits of the evaluation.
+* `src/matvec.hpp`: Reference solution for a matrix-vector multiplication using the tensor class. Can be also a
+  potential target for optimizations.
 
 The file `.gitlab-ci.yml` triggers a continuous integration pipeline that clones, builds, and runs your project.
 It does so using the datasets in `mnist-datasets/`. Note that **this is not the evaluation**.
