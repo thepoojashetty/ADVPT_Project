@@ -7,8 +7,8 @@ of the handwritten digits found in the MNIST dataset.
 We test your implementation by running the following shell scripts with our own (and not publicly available) datasets:
 
 * `build.sh`: Shall contain all necessary code to prepare/build your executable(s)
-* `read_dataset_images.sh`: Checks if you can successfully read in, convert and pretty-print an MNIST dataset image.
-* `read_dataset_labels.sh`: Checks if you can successfully read in and pretty-print an MNIST dataset label.
+* `read_dataset_images.sh`: Checks if you can successfully read in, convert and write an MNIST dataset image to file.
+* `read_dataset_labels.sh`: Checks if you can successfully read in and write an MNIST dataset label to file.
 * `mnist.sh`: Triggers the training and testing of your neural network implementation.
 
 Please note that these scripts are responsible for testing different aspects of your implementation and, thus, expect
@@ -35,12 +35,13 @@ Besides the shell scripts, we also have the following directories:
 * `mnist-configs/`:
   Configuration files passed to the `mnist.sh` script that provide input arguments to steer the program flow (e.g.
   hyperparameters) of the neural network.
-* `src/tensor/`:
+* `src/tensor.hpp`:
   Reference solution for the tensor assignment. We recommend you to use this implementation as central datastructure for
-  image/label data, the weights and biases for your network, etc.
+  image/label data, the weights and biases for your network, etc. Keep in mind that this implementation is **slow** and
+  potentially needs improvements to overcome the time limits of the evaluation.
 
 The file `.gitlab-ci.yml` triggers a continuous integration pipeline that clones, builds, and runs your project.
-It does so using the datasets in `mnist-datasets/`.
+It does so using the datasets in `mnist-datasets/`. Note that **this is not the evaluation**.
 We included this, so you can make sure that your code builds on our machines without having to wait for the evaluation.
 The pipeline is triggered everytime you push a new commit to your repository.
 
