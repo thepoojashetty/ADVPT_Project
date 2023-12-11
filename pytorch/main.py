@@ -4,6 +4,7 @@ import torch.nn.functional as F
 import torchvision
 import torchvision.transforms as transforms
 
+# can be used to use subsets (e.g. a single image) of the MNIST dataset
 from torch.utils.data import Subset
 
 # define hyper-parameters
@@ -42,7 +43,7 @@ class NeuralNet(nn.Module):
         self.fc1 = nn.Linear(nn_input_size, nn_hidden_size)
         self.fc2 = nn.Linear(nn_hidden_size, nn_num_classes)
 
-    # sequence: fully-connected -> ReLU -> fully-connected
+    # sequence: fully-connected -> ReLU -> fully-connected -> softmax
     def forward(self, x):
         x = self.fc1(x)
         x = F.relu(x)
@@ -57,7 +58,7 @@ model = NeuralNet(input_size, hidden_size, num_classes)
 # loss function: cross entropy
 loss_func = nn.CrossEntropyLoss()
 
-# optimizer: stochastic gradient descent
+# optimizer: stochastic gradient descent (NOTE: implementing momentum is not necessary for the project)
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9)
 
 # training phase
@@ -88,7 +89,7 @@ for epoch in range(num_epochs):
 # testing phase
 model.eval()
 
-# no grad computation required
+# no grad computation required since there is no backward pass
 with torch.no_grad():
     # counter variables to compute accuracy
     correct = 0
