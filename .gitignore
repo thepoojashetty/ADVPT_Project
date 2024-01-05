@@ -1,0 +1,8 @@
+.DS_Store
+**/CMakeFiles/
+project_mnist.pdf
+CMakeCache.txt
+build/
+image_out.txt
+src/eigen.cpp
+
