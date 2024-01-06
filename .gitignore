@@ -5,4 +5,6 @@ CMakeCache.txt
 build/
 image_out.txt
 src/eigen.cpp
+.vs
+.vscode
 
