@@ -51,6 +51,10 @@ void DatasetLabels::readLabelData(const std::string &input_filepath)
 
         // Read label data
         int label = 0;
+
+        // Create a Eigen::Matrix of size (batch_size,10) and then push it to batches_.
+        Eigen::MatrixXd label_matrix(batch_size_, 10);
+        label_matrix.setZero();
         for (size_t i = 0; i < number_of_labels_; i++)
         {
             // Read an unsigned byte from the file
@@ -58,11 +62,21 @@ void DatasetLabels::readLabelData(const std::string &input_filepath)
             input_file.read(reinterpret_cast<char *>(&byte), sizeof(byte));
             // Convert byte to int
             label = static_cast<int>(byte);
-            Eigen::MatrixXd label_matrix(1, 10);
-            label_matrix.setZero();
+
             // Set corresponding position to 1 (one-hot incoding)
-            label_matrix(0, label) = 1;
-            batches_.push_back(label_matrix);
+            label_matrix(i % batch_size_, label) = 1;
+
+            // Push the batch to batches_ if it is full
+            if ((i + 1) % batch_size_ == 0)
+            {
+                batches_.push_back(label_matrix);
+                label_matrix.setZero();
+            }
+            // or else push the last batch to batches_
+            else if (i == number_of_labels_ - 1)
+            {
+                batches_.push_back(label_matrix);
+            }
         }
     }
     else
@@ -83,20 +97,20 @@ void DatasetLabels::writeLabelToFile(const std::string &output_filepath, const s
     std::ofstream output_file(output_filepath, std::ios::binary);
     if (output_file.is_open())
     {
-        
+
         // Write the rank of the tensor to the file
-        output_file<<1<<"\n";
+        output_file << 1 << "\n";
 
         // Write the shape of the tensor to the file
-        output_file<<10<<"\n";
+        output_file << 10 << "\n";
 
         // Write the tensor elements to the file
         size_t batch_no = index / batch_size_;
         size_t image_index = index % batch_size_;
         size_t image_size = 10;
-        for(size_t i=0;i<image_size;++i)
+        for (size_t i = 0; i < image_size; ++i)
         {
-            output_file<<batches_[batch_no](image_index,i)<<"\n";
+            output_file << batches_[batch_no](image_index, i) << "\n";
         }
         output_file.close();
     }
