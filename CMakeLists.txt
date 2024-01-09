@@ -17,3 +17,7 @@ target_compile_features(test_data_images PRIVATE cxx_std_20)
 target_compile_options(test_data_images PRIVATE -Wall -Wextra -pedantic -Werror -Wno-unused-parameter -Wno-unused-variable -pg -g)
 target_link_options(test_data_images PRIVATE -pg)
 
+add_executable(test_data_labels src/test_data_labels.cpp)
+target_compile_features(test_data_labels PRIVATE cxx_std_20)
+target_compile_options(test_data_labels PRIVATE -Wall -Wextra -pedantic -Werror -Wno-unused-parameter -Wno-unused-variable -pg -g)
+target_link_options(test_data_labels PRIVATE -pg)
