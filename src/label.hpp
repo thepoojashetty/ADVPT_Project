@@ -85,7 +85,7 @@ void DatasetLabels::writeLabelToFile(const std::string &output_filepath, const s
     {
         
         // Write the rank of the tensor to the file
-        output_file<<2<<"\n";
+        output_file<<1<<"\n";
 
         // Write the shape of the tensor to the file
         output_file<<10<<"\n";
@@ -98,7 +98,6 @@ void DatasetLabels::writeLabelToFile(const std::string &output_filepath, const s
         {
             output_file<<batches_[batch_no](image_index,i)<<"\n";
         }
-        output_file<<"\n";
         output_file.close();
     }
     else
