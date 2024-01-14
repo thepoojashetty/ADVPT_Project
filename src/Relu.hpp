@@ -48,5 +48,3 @@ Eigen::MatrixXd Relu::backward(Eigen::MatrixXd error) {
     error_ = error_.cwiseProduct(input_.cwiseSign());
     return error_;
 }
-
-#endif // RELU_HPP

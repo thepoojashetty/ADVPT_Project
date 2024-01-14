@@ -16,6 +16,7 @@
 // Therefore, we compute the error tensor of the previous layer as follows
 // y' is predicted output, y is actual output
 // e(n - 1) = y' - y
+// This formula may not be accurate, but it is good enough for the purpose of this project
 
 // Should use Eigen library to implement the forward and backward pass
 

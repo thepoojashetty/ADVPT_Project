@@ -1,7 +1,9 @@
+#pragma once
 // Write a test for the softmax function
 
 #include <gtest/gtest.h>
 #include "Softmax.hpp"
+#include "Eigen/Dense"
 
 TEST(SoftmaxTest, SoftmaxForward) {
     Softmax softmax;
