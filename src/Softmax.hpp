@@ -2,24 +2,6 @@
 
 #include "Eigen/Dense"
 
-// Softmax activation function: transforms the output of the last layer into a probability distribution
-// The sum of all the elements in the output vector is 1
-
-// Forward pass of the softmax layer
-// Encode input neurons x as a probability distribution y using the softmax function
-// y = softmax(x) = exp(x) / sum(exp(x))
-// x: input vector
-// return: output vector
-
-// Backward pass of the softmax layer
-// The softmax activation function does not have any parameters to learn
-// Therefore, we compute the error tensor of the previous layer as follows
-// y' is predicted output, y is actual output
-// e(n - 1) = y' - y
-// This formula may not be accurate, but it is good enough for the purpose of this project
-
-// Should use Eigen library to implement the forward and backward pass
-
 class Softmax
 {
 private:
