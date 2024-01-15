@@ -7,7 +7,7 @@
 
 // Forward pass of the softmax layer
 // Encode input neurons x as a probability distribution y using the softmax function
-// y = softmax(x) = exp(x) / sum(exp(x)) 
+// y = softmax(x) = exp(x) / sum(exp(x))
 // x: input vector
 // return: output vector
 
@@ -20,32 +20,44 @@
 
 // Should use Eigen library to implement the forward and backward pass
 
-class Softmax {
+class Softmax
+{
 private:
-    Eigen::MatrixXd input_;
-    Eigen::MatrixXd output_;
-    Eigen::MatrixXd error_;
+    Eigen::MatrixXd inputTensorCache;
+    Eigen::MatrixXd yHat;
+
 public:
     Softmax();
     ~Softmax();
-    Eigen::MatrixXd forward(Eigen::MatrixXd);
-    Eigen::MatrixXd backward(Eigen::MatrixXd, Eigen::MatrixXd);
+
+    Eigen::MatrixXd forward(const Eigen::MatrixXd &);
+    Eigen::MatrixXd backward(const Eigen::MatrixXd &);
 };
 
 Softmax::Softmax() {}
 
 Softmax::~Softmax() {}
 
-Eigen::MatrixXd Softmax::forward(Eigen::MatrixXd input) {
-    input_ = input;
-    output_ = input_.array().exp();
-    output_ = output_ / output_.sum();
-    return output_;
+Eigen::MatrixXd Softmax::forward(const Eigen::MatrixXd &inputTensor)
+{
+    inputTensorCache = inputTensor;
+
+    // Subtract the maximum value for numerical stability
+    Eigen::MatrixXd shiftedInput = inputTensor.rowwise() - inputTensor.colwise().maxCoeff();
+
+    // Calculate exponentials and the sum of exponentials
+    Eigen::MatrixXd exponentials = shiftedInput.array().exp();
+    Eigen::MatrixXd exponentSums = exponentials.rowwise().sum().replicate(1, inputTensor.cols());
+
+    // Calculate softmax probabilities
+    yHat = exponentials.cwiseQuotient(exponentSums);
+
+    return yHat;
 }
 
-Eigen::MatrixXd Softmax::backward(Eigen::MatrixXd error, Eigen::MatrixXd target) {
-    error_ = error;
-    error_ = error_ - target;
-    return error_;
+Eigen::MatrixXd Softmax::backward(const Eigen::MatrixXd &errorTensor)
+{
+    // Calculate the gradient of the loss with respect to the input
+    Eigen::MatrixXd gradientInput = yHat.array() - errorTensor.array();
+    return yHat.cwiseProduct(gradientInput);
 }
-

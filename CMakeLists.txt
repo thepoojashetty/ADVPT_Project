@@ -27,9 +27,19 @@ target_link_libraries(
     test_relu
   GTest::gtest_main
 )
-
 include(GoogleTest)
 gtest_discover_tests(test_relu)
+
+add_executable(
+  test_softmax
+  src/test_softmax.cpp
+)
+target_link_libraries(
+    test_softmax
+  GTest::gtest_main
+)
+include(GoogleTest)
+gtest_discover_tests(test_softmax)
 
 
 add_executable(test_data_images src/test_data_images.cpp)

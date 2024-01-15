@@ -21,30 +21,30 @@
 
 // Should use Eigen library to implement the forward and backward pass
 
-class Relu {
+class Relu
+{
 private:
-    Eigen::MatrixXd input_;
-    Eigen::MatrixXd output_;
-    Eigen::MatrixXd error_;
+    Eigen::MatrixXd inputTensorCache;
+
 public:
     Relu();
     ~Relu();
-    Eigen::MatrixXd forward(Eigen::MatrixXd);
-    Eigen::MatrixXd backward(Eigen::MatrixXd);
+
+    Eigen::MatrixXd forward(const Eigen::MatrixXd &);
+    Eigen::MatrixXd backward(const Eigen::MatrixXd &);
 };
 
 Relu::Relu() {}
 
 Relu::~Relu() {}
 
-Eigen::MatrixXd Relu::forward(Eigen::MatrixXd input) {
-    input_ = input;
-    output_ = input_.cwiseMax(0);
-    return output_;
+Eigen::MatrixXd Relu::forward(const Eigen::MatrixXd &inputTensor)
+{
+    inputTensorCache = inputTensor;
+    return inputTensor.array().cwiseMax(0);
 }
 
-Eigen::MatrixXd Relu::backward(Eigen::MatrixXd error) {
-    error_ = error;
-    error_ = error_.cwiseProduct(input_.cwiseSign());
-    return error_;
+Eigen::MatrixXd Relu::backward(const Eigen::MatrixXd &errorTensor)
+{
+    return (inputTensorCache.array() <= 0).select(0, errorTensor);
 }
