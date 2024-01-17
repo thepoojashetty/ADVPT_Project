@@ -8,9 +8,39 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/include
 )
 
-#file(GLOB all_SRC
-#        "${PROJECT_SOURCE_DIR}/src/*.cpp"
-#)
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+)
+
+FetchContent_MakeAvailable(googletest)
+
+
+enable_testing()
+
+add_executable(
+  test_relu
+  src/test_relu.cpp
+)
+target_link_libraries(
+    test_relu
+  GTest::gtest_main
+)
+include(GoogleTest)
+gtest_discover_tests(test_relu)
+
+add_executable(
+  test_softmax
+  src/test_softmax.cpp
+)
+target_link_libraries(
+    test_softmax
+  GTest::gtest_main
+)
+include(GoogleTest)
+gtest_discover_tests(test_softmax)
+
 
 add_executable(test_data_images src/test_data_images.cpp)
 target_compile_features(test_data_images PRIVATE cxx_std_20)
