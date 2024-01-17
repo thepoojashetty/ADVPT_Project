@@ -19,6 +19,7 @@ public:
     ~DatasetLabels();
     void readLabelData(const std::string &);
     void writeLabelToFile(const std::string &, const size_t &);
+    Eigen::MatrixXd getBatch(const size_t &);
 };
 
 DatasetLabels::DatasetLabels(size_t batch_size)
@@ -27,6 +28,11 @@ DatasetLabels::DatasetLabels(size_t batch_size)
 }
 
 DatasetLabels::~DatasetLabels() {}
+
+Eigen::MatrixXd DatasetLabels::getBatch(const size_t &index)
+{
+    return batches_[index];
+}
 
 // Reads file containing MNIST label data and stores it in batches
 // Makes use of Eigen library to store the data in a matrix
