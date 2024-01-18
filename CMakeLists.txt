@@ -51,3 +51,8 @@ add_executable(test_data_labels src/test_data_labels.cpp)
 target_compile_features(test_data_labels PRIVATE cxx_std_20)
 target_compile_options(test_data_labels PRIVATE -Wall -Wextra -pedantic -Werror -Wno-unused-parameter -Wno-unused-variable -pg -g)
 target_link_options(test_data_labels PRIVATE -pg)
+
+add_executable(mnist src/train_test_model.cpp)
+target_compile_features(mnist PRIVATE cxx_std_20)
+target_compile_options(mnist PRIVATE -Wall -Wextra -pedantic -Werror -Wno-unused-parameter -Wno-unused-variable -pg -g)
+target_link_options(mnist PRIVATE -pg)
