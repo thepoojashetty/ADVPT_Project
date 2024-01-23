@@ -36,11 +36,20 @@ public:
         return mul.rowwise() + vbias.transpose();
     }
 
-    Eigen::MatrixXd backward(Eigen::MatrixXd error, SGD sgd) {
-        // save input tensor for backward-pass
+    Eigen::MatrixXd backward(Eigen::MatrixXd error_tensor, SGD sgd) {
         auto W = weights.block(0, 0, input_size, output_size);
+        auto error = error_tensor*W.transpose();
+    
+        Eigen::MatrixXd extended(input_tensor.rows(), input_tensor.cols()+1);
+        auto ones = Eigen::MatrixXd::Constant(input_tensor.rows(), 1, 1.0);
 
-        return input_tensor;
+        extended << input_tensor, ones;
+
+        Eigen::MatrixXd gradient_weights(weights.rows(), weights.cols());
+        gradient_weights = extended.transpose()*error_tensor;
+        sgd.updateWeights(weights, gradient_weights);
+
+        return error;
     }
 
     ~FullyConnected() {}
