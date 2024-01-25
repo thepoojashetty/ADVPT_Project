@@ -35,3 +35,14 @@ TEST_F(FCTest, TestBackwardSize) {
     ASSERT_EQ(error_tensor.cols(), inputSize);
     ASSERT_EQ(error_tensor.rows(), batchSize);
 }
+
+TEST_F(FCTest, TestBiasUpdate) {
+    input_tensor = Eigen::MatrixXd::Zero(batchSize, inputSize);
+    for (int i=0; i<10; i++) {
+        auto output_tensor = fc.forward(input_tensor);
+        auto error_tensor = -output_tensor;
+        fc.backward(error_tensor, sgd);
+        auto new_output_tensor = fc.forward(input_tensor);
+        ASSERT_TRUE(output_tensor.array().pow(2).sum() < new_output_tensor.array().pow(2).sum());
+    }
+}
