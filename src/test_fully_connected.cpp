@@ -6,14 +6,14 @@
 class FCTest : public testing::Test {
 protected:
     const int batchSize = 9;
-    const int input_size = 4;
-    const int output_size = 3;
+    const int inputSize = 4;
+    const int outputSize = 3;
     Eigen::MatrixXd input_tensor;
     SGD sgd;
     FullyConnected fc;
     void SetUp() override {
-        input_tensor = Eigen::MatrixXd::Random(batchSize, input_size);
-        fc = FullyConnected(input_size, output_size);
+        input_tensor = Eigen::MatrixXd::Random(batchSize, inputSize);
+        fc = FullyConnected(inputSize, outputSize);
         sgd = SGD(1);
     }
 
@@ -21,10 +21,17 @@ protected:
 
 TEST_F(FCTest, TestWeightsUpdate) {
     for (int i=0; i<10; i++) {
-        Eigen::MatrixXd output_tensor = fc.forward(input_tensor);
-        Eigen::MatrixXd error_tensor = -output_tensor;
+        auto output_tensor = fc.forward(input_tensor);
+        auto error_tensor = -output_tensor;
         fc.backward(error_tensor, sgd);
-        Eigen::MatrixXd new_output_tensor = fc.forward(input_tensor);
+        auto new_output_tensor = fc.forward(input_tensor);
         ASSERT_TRUE(output_tensor.array().pow(2).sum() < new_output_tensor.array().pow(2).sum());
     }
+}
+
+TEST_F(FCTest, TestBackwardSize) {
+    auto output_tensor = fc.forward(input_tensor);
+    auto error_tensor = fc.backward(output_tensor, sgd);
+    ASSERT_EQ(error_tensor.cols(), inputSize);
+    ASSERT_EQ(error_tensor.rows(), batchSize);
 }
