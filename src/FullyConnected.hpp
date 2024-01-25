@@ -16,11 +16,9 @@ private:
 
 public:
     FullyConnected() {
-        std::cout << ("$ $ $ $ $ $ $ $ $ $ --- no param constructor") << std::endl;
     }
     FullyConnected(size_t in, size_t out) : input_size(in), output_size(out)
     {
-        std::cout << ("$ $ $ $ $ $ $ $ $ $ --- FC constructor") << std::endl;
         weights = Eigen::MatrixXd::Random(input_size+1, output_size);
     };
 
