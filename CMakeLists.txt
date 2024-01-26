@@ -41,6 +41,17 @@ target_link_libraries(
 include(GoogleTest)
 gtest_discover_tests(test_softmax)
 
+add_executable(
+  test_fully_connected
+  src/test_fully_connected.cpp
+)
+target_link_libraries(
+  test_fully_connected
+  GTest::gtest_main
+)
+include(GoogleTest)
+gtest_discover_tests(test_fully_connected)
+
 
 add_executable(test_data_images src/test_data_images.cpp)
 target_compile_features(test_data_images PRIVATE cxx_std_20)
