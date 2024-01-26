@@ -25,17 +25,11 @@ do
     echo "$key=$value"
 done < "$1"
 
-# Compile your C++ program
-g++ -o train_test_model src/train_test_model.cpp
 
-# Check if the compilation was successful
-if [ $? -ne 0 ]; then
-    echo "Compilation failed"
-    exit 1
-fi
 
-# Run your C++ program with the parsed parameters
-./train_test_model $learning_rate $num_epochs $batch_size $hidden_size $rel_path_train_images $rel_path_train_labels $rel_path_test_images $rel_path_test_labels $rel_path_log_file
+# Run the build/mnist executable with the appropriate arguments
+./build/mnist $learning_rate $num_epochs $batch_size $hidden_size $rel_path_train_images $rel_path_train_labels $rel_path_test_images $rel_path_test_labels $rel_path_log_file
 
 # Print the accuracy (assume that the accuracy is the last line of the log file)
-tail -n 1 $rel_path_log_file
+# Not implemented yet
+# tail -n 1 $rel_path_log_file
