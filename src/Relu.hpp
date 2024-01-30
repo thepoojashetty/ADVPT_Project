@@ -35,5 +35,13 @@ Eigen::MatrixXd Relu::forward(const Eigen::MatrixXd &inputTensor)
 
 Eigen::MatrixXd Relu::backward(const Eigen::MatrixXd &errorTensor)
 {
-    return (inputTensorCache.array() < 0).select(0, errorTensor);
+    Eigen::MatrixXd output = Eigen::MatrixXd(inputTensorCache.rows(), inputTensorCache.cols());
+    for (int i=0; i<inputTensorCache.rows(); i++)
+        for (int j=0; j<inputTensorCache.cols(); j++) {
+            if (inputTensorCache(i,j) >= 0.0)
+                output(i, j) = errorTensor(i, j);
+            else
+                output(i, j) = 0;
+        }
+    return output;
 }
