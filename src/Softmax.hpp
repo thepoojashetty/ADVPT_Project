@@ -40,6 +40,8 @@ Eigen::MatrixXd Softmax::forward(const Eigen::MatrixXd &inputTensor)
 Eigen::MatrixXd Softmax::backward(const Eigen::MatrixXd &errorTensor)
 {
     // Calculate the gradient of the loss with respect to the input
-    Eigen::MatrixXd gradientInput = yHat.array() - errorTensor.array();
-    return yHat.cwiseProduct(gradientInput);
+    Eigen::MatrixXd gradientInput = yHat.array() * (1.0 - yHat.array());
+    gradientInput = gradientInput.cwiseProduct(errorTensor);
+
+    return gradientInput;
 }

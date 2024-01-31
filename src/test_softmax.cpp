@@ -28,27 +28,35 @@ TEST_F(SoftmaxTest, ForwardPass) {
 }
 
 TEST_F(SoftmaxTest, BackwardPass) {
-    // Example input values
-    Eigen::MatrixXd inputTensor(3, 3);
-    inputTensor << 1.0, 2.0, 3.0,
-                   4.0, 5.0, 6.0,
-                   7.0, 8.0, 9.0;
+    // Create a Softmax object
+    Softmax softmax;
 
-    // Forward pass (required for the backward pass)
-    softmaxLayer.forward(inputTensor);
+    // Input tensor for testing
+    Eigen::MatrixXd inputTensor(2, 3);
+    inputTensor << 1, 2, 3,
+                   4, 5, 6;
 
-    // Example error tensor for the backward pass (this should be replaced with actual gradients in a real application)
-    Eigen::MatrixXd errorTensor(3, 3);
-    errorTensor << 0.1, 0.2, 0.3,
-                   -0.4, -0.5, -0.6,
-                   0.7, 0.8, 0.9;
+    // Perform the forward pass
+    Eigen::MatrixXd outputTensor = softmax.forward(inputTensor);
 
-    // Backward pass
-    Eigen::MatrixXd gradientInput = softmaxLayer.backward(errorTensor);
+    // Error tensor for testing
+    Eigen::MatrixXd errorTensor(2, 3);
+    errorTensor << 0.1, -0.2, 0.3,
+                   0.4, 0.5, -0.6;
 
-    // Check if the gradient with respect to input has the correct dimensions
-    ASSERT_EQ(gradientInput.rows(), inputTensor.rows());
-    ASSERT_EQ(gradientInput.cols(), inputTensor.cols());
+    // Perform the backward pass
+    Eigen::MatrixXd gradientInput = softmax.backward(errorTensor);
+
+    // Check the result against expected values
+    // The expected values are calculated manually based on the Softmax derivative
+    Eigen::MatrixXd expectedGradientInput(2, 3);
+    expectedGradientInput << 0.0222222, -0.0444444, 0.0666667,
+                         0.0888889, 0.111111, -0.133333;
+
+    std::cout << "Actual Result:\n" << gradientInput << "\n";
+    std::cout << "Expected Result:\n" << expectedGradientInput << "\n";
+
+    ASSERT_TRUE(gradientInput.isApprox(expectedGradientInput, 1e-4));
 }
 
 int main(int argc, char** argv) {
