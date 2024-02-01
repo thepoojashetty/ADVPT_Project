@@ -22,6 +22,11 @@ public:
         weights = Eigen::MatrixXd::Random(input_size+1, output_size);
     };
 
+    void setWeights(Eigen::MatrixXd w) {
+        // for testing purposes
+        weights = w;
+    }
+
     Eigen::MatrixXd forward(Eigen::MatrixXd input) {
         // save input tensor for backward-pass
         input_tensor = input;
