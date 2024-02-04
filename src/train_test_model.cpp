@@ -17,7 +17,7 @@ int main(int argc, char **argv)
     std::string predictionLogFilePath = argv[9];
 
     NeuralNetwork nn(learningRate, numEpochs, batchSize, hiddenLayerSize, trainDataPath, trainLabelsPath, testDataPath, testLabelsPath, predictionLogFilePath);
-    //nn.train();
+    nn.train();
     nn.test();
     return 0;
 }
