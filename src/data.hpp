@@ -21,6 +21,8 @@ public:
     ~DataSetImages();
     void readImageData(const std::string&);
     void writeImageToFile(const std::string&,const size_t&);
+    Eigen::MatrixXd getBatch(const size_t&);
+    size_t getNoOfBatches();
 };
 
 DataSetImages::DataSetImages(size_t batch_size)
@@ -29,6 +31,16 @@ DataSetImages::DataSetImages(size_t batch_size)
 }
 
 DataSetImages::~DataSetImages(){}
+
+Eigen::MatrixXd DataSetImages::getBatch(const size_t& index)
+{
+    return batches_[index];
+}
+
+size_t DataSetImages::getNoOfBatches()
+{
+    return batches_.size();
+}
 
 //Reads file containing MNIST image data and stores it in batches
 //Makes use of Eigen library to store the data in a matrix
