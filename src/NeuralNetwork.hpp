@@ -90,10 +90,10 @@ void NeuralNetwork::train(){
     DatasetLabels trainLabels(batchSize);
     trainLabels.readLabelData(trainLabelsPath);
 
-    std::cout << "Batch size: " << batchSize << std::endl;
-    std::cout << "Number of epochs: " << numEpochs << std::endl;
+    // std::cout << "Batch size: " << batchSize << std::endl;
+    // std::cout << "Number of epochs: " << numEpochs << std::endl;
     for (int i=0;i<numEpochs;i++){
-        std::cout<<"Epoch: "<<i<<std::endl;
+        // std::cout<<"Epoch: "<<i<<std::endl;
         // for each batch
         for (size_t j=0;j<trainData.getNoOfBatches();j++){
             // forward
@@ -103,7 +103,7 @@ void NeuralNetwork::train(){
             // backward
             Eigen::MatrixXd lossBackward = celoss.backward(trainLabels.getBatch(j));
             backward(lossBackward);
-            std::cout<<" - Batch: "<<j<<". Loss: "<<loss<<std::endl;
+            // std::cout<<" - Batch: "<<j<<". Loss: "<<loss<<std::endl;
         }
     }
 }
@@ -121,7 +121,7 @@ void NeuralNetwork::test(){
     for (size_t j=0;j<testData.getNoOfBatches();j++){
         predictionLogFile<<"Current batch: "<<j<<std::endl;
         // Also print to cout
-        std::cout<<"Current batch: "<<j<<std::endl;
+        // std::cout<<"Current batch: "<<j<<std::endl;
         // forward
         Eigen::MatrixXd predictedOutput = forward(testData.getBatch(j));
 
@@ -132,7 +132,7 @@ void NeuralNetwork::test(){
             testLabels.getBatch(j).row(i).maxCoeff(&actualLabel);
             predictionLogFile<<" - image "<<j*batchSize+i<<": Prediction="<<predLabel<<". Label="<<actualLabel<<std::endl;
             // Also print to cout
-            std::cout<<" - image "<<j*batchSize+i<<": Prediction="<<predLabel<<". Label="<<actualLabel<<std::endl;
+            // std::cout<<" - image "<<j*batchSize+i<<": Prediction="<<predLabel<<". Label="<<actualLabel<<std::endl;
         }
     }
     predictionLogFile.close();
