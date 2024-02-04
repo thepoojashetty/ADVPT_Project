@@ -84,7 +84,7 @@ Eigen::MatrixXd NeuralNetwork::backward(const Eigen::MatrixXd &errorTensor){
 void NeuralNetwork::train(){
     // load data
     // Log the training process go cout
-    std::cout<<"Training started"<<std::endl;
+    // std::cout<<"Training started"<<std::endl;
     DataSetImages trainData(batchSize);
     trainData.readImageData(trainDataPath);
     DatasetLabels trainLabels(batchSize);

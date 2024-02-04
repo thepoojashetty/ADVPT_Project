@@ -7,7 +7,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 # Read the config file
-while IFS= read -r line
+while IFS= read -r line || [ -n "$line" ]
 do
     # Skip lines without an equal sign
     if [[ $line != *"="* ]]; then
@@ -22,7 +22,7 @@ do
     declare $key=$value
 
     # Print the key-value pair
-    echo "$key=$value"
+    # echo "$key=$value"
 done < "$1"
 
 
