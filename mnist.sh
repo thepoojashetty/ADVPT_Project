@@ -7,7 +7,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 # Read the config file
-while IFS= read -r line
+while IFS= read -r line || [ -n "$line" ]
 do
     # Skip lines without an equal sign
     if [[ $line != *"="* ]]; then
@@ -22,14 +22,10 @@ do
     declare $key=$value
 
     # Print the key-value pair
-    echo "$key=$value"
+    # echo "$key=$value"
 done < "$1"
 
 
 
 # Run the build/mnist executable with the appropriate arguments
 ./build/mnist $learning_rate $num_epochs $batch_size $hidden_size $rel_path_train_images $rel_path_train_labels $rel_path_test_images $rel_path_test_labels $rel_path_log_file
-
-# Print the accuracy (assume that the accuracy is the last line of the log file)
-# Not implemented yet
-# tail -n 1 $rel_path_log_file
