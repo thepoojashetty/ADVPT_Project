@@ -34,33 +34,35 @@ TEST_F(ReLULayerTest, ForwardPass) {
 }
 
 TEST_F(ReLULayerTest, BackwardPass) {
-    // Example input values
-    Eigen::MatrixXd inputTensor(3, 3);
-    inputTensor << -1, 2, -3,
-                   4, -5, 6,
-                   -7, 8, 9;
+    // Create a ReLU object
+    Relu relu;
 
-    // Forward pass (required for the backward pass)
-    reluLayer.forward(inputTensor);
+    // Input tensor for testing (replace with your own values)
+    Eigen::MatrixXd inputTensor(2, 2);
+    inputTensor << 1, -2,
+                   3, 0;
 
-    // Example error tensor for the backward pass
-    Eigen::MatrixXd errorTensor(3, 3);
-    errorTensor << 0.1, -0.2, 0.3,
-                   -0.4, 0.5, -0.6,
-                   0.7, -0.8, 0.9;
+    // Perform the forward pass
+    Eigen::MatrixXd outputTensor = relu.forward(inputTensor);
 
-    // Backward pass
-    Eigen::MatrixXd gradientInput = reluLayer.backward(errorTensor);
+    // Error tensor for testing
+    Eigen::MatrixXd errorTensor(2, 2);
+    errorTensor << 2, -1,
+                   1, 3;
 
-    Eigen::MatrixXd expectedTensor(3, 3);
-    expectedTensor << 0, -0.2, 0,
-                     -0.4, 0, -0.6,
-                      0, -0.8, 0.9;
+    // Perform the backward pass
+    Eigen::MatrixXd gradientInput = relu.backward(errorTensor);
 
-    // Check if the gradient with respect to input has the correct dimensions
-    ASSERT_EQ(gradientInput.rows(), inputTensor.rows());
-    ASSERT_EQ(gradientInput.cols(), inputTensor.cols());
-    ASSERT_TRUE(gradientInput.isApprox(expectedTensor));
+    // Check the result against expected values
+    // The expected values are calculated manually based on the ReLU derivative
+    Eigen::MatrixXd expectedGradientInput(2, 2);
+    expectedGradientInput << 2, 0,
+                             1, 0;
+
+    std::cout << "Actual Result:\n" << gradientInput << "\n";
+    std::cout << "Expected Result:\n" << expectedGradientInput << "\n";
+
+    ASSERT_TRUE(gradientInput.isApprox(expectedGradientInput, 1e-6));
 }
 
 int main(int argc, char** argv) {

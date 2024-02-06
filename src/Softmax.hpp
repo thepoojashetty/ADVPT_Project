@@ -24,15 +24,9 @@ Eigen::MatrixXd Softmax::forward(const Eigen::MatrixXd &inputTensor)
 {
     inputTensorCache = inputTensor;
 
-    // Subtract the maximum value for numerical stability
-    Eigen::MatrixXd shiftedInput = inputTensor.rowwise() - inputTensor.colwise().maxCoeff();
-
-    // Calculate exponentials and the sum of exponentials
-    Eigen::MatrixXd exponentials = shiftedInput.array().exp();
-    Eigen::MatrixXd exponentSums = exponentials.rowwise().sum().replicate(1, inputTensor.cols());
-
-    // Calculate softmax probabilities
-    yHat = exponentials.cwiseQuotient(exponentSums);
+    // Calculate the softmax of the input tensor
+    Eigen::MatrixXd expTensor = inputTensor.array().exp();
+    yHat = expTensor.array().colwise() / expTensor.array().rowwise().sum();
 
     return yHat;
 }
@@ -40,6 +34,8 @@ Eigen::MatrixXd Softmax::forward(const Eigen::MatrixXd &inputTensor)
 Eigen::MatrixXd Softmax::backward(const Eigen::MatrixXd &errorTensor)
 {
     // Calculate the gradient of the loss with respect to the input
-    Eigen::MatrixXd gradientInput = yHat.array() - errorTensor.array();
-    return yHat.cwiseProduct(gradientInput);
+    Eigen::MatrixXd gradientInput = yHat.array() * (1.0 - yHat.array());
+    gradientInput = gradientInput.cwiseProduct(errorTensor);
+
+    return gradientInput;
 }
