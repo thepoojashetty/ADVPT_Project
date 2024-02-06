@@ -29,30 +29,19 @@ public:
 
     Eigen::MatrixXd forward(Eigen::MatrixXd input) {
         // save input tensor for backward-pass
-        input_tensor = input;
+        input_tensor = Eigen::MatrixXd(input.rows(), input.cols()+1);
+        auto ones = Eigen::MatrixXd::Constant(input.rows(), 1, 1.0);
+        input_tensor << input, ones;
 
-        auto W = weights.block(0, 0, input_size, output_size);
-        auto mul = input*W; //input * weights[:-1, :]
-        auto bias = weights.block(input_size, 0, 1, output_size); // weights[-1, :]
-        auto vbias = Eigen::VectorXd {bias.reshaped()};
-
-        return mul.rowwise() + vbias.transpose();
+        return input_tensor*weights;
     }
 
     Eigen::MatrixXd backward(Eigen::MatrixXd error_tensor, SGD sgd) {
-        auto W = weights.block(0, 0, input_size, output_size);
-        auto error = error_tensor*W.transpose();
-    
-        Eigen::MatrixXd extended(input_tensor.rows(), input_tensor.cols()+1);
-        auto ones = Eigen::MatrixXd::Constant(input_tensor.rows(), 1, 1.0);
-
-        extended << input_tensor, ones;
-
         Eigen::MatrixXd gradient_weights(weights.rows(), weights.cols());
-        gradient_weights = extended.transpose()*error_tensor;
+        gradient_weights = input_tensor.transpose()*error_tensor;
         sgd.updateWeights(weights, gradient_weights);
 
-        return error;
+        return error_tensor*weights.transpose();
     }
 
     ~FullyConnected() {}
