@@ -9,3 +9,4 @@ src/eigen.cpp
 .vs
 .vscode
 gmon.out
+log_predictions-ci.txt

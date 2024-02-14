@@ -32,15 +32,15 @@ public:
         input_tensor = Eigen::MatrixXd(input.rows(), input.cols()+1);
         auto ones = Eigen::MatrixXd::Constant(input.rows(), 1, 1.0);
         input_tensor << input, ones;
-
-        return input_tensor*weights;
+        Eigen::MatrixXd output= input_tensor*weights;
+        return output;
     }
 
     Eigen::MatrixXd backward(Eigen::MatrixXd error_tensor, SGD sgd) {
         Eigen::MatrixXd gradient_weights(weights.rows(), weights.cols());
         gradient_weights = input_tensor.transpose()*error_tensor;
-        sgd.updateWeights(weights, gradient_weights);
-
+        // std::cout << "bfr_weights: " << weights.row(0).segment(0,7) << std::endl;
+        weights = sgd.updateWeights(weights, gradient_weights);
         return error_tensor*weights.transpose();
     }
 
