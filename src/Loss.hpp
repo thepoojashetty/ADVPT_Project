@@ -1,5 +1,7 @@
 #pragma once
 
+#define EPSILON 1e-10
+
 class CrossEntropyLoss {
     private:
         Eigen::MatrixXd predTensorCache;
@@ -18,11 +20,12 @@ CrossEntropyLoss::~CrossEntropyLoss() {}
 double CrossEntropyLoss::forward(const Eigen::MatrixXd &inputTensor, const Eigen::MatrixXd &labelTensor)
 {
     predTensorCache = inputTensor;
-    return -((labelTensor.array() * inputTensor.array().log()).sum());
+    return -((labelTensor.array() * (inputTensor.array().log())).sum());
 }
 
 Eigen::MatrixXd CrossEntropyLoss::backward(const Eigen::MatrixXd &labelTensor)
 {
     // target output/predicted output
-    return -(labelTensor.array() / predTensorCache.array());
+    auto output = -(labelTensor.array() / predTensorCache.array());
+    return output;
 }

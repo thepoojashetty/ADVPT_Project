@@ -31,6 +31,18 @@ include(GoogleTest)
 gtest_discover_tests(test_relu)
 
 add_executable(
+  test_loss
+  src/test_loss.cpp
+)
+target_link_libraries(
+  test_loss
+  GTest::gtest_main
+)
+include(GoogleTest)
+gtest_discover_tests(test_loss)
+
+
+add_executable(
   test_softmax
   src/test_softmax.cpp
 )

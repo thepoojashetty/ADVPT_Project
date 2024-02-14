@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "Eigen/Dense"
 #include "Relu.hpp"  // Include the header file where ReLULayer is defined
+#include <iostream>
 
 class ReLULayerTest : public ::testing::Test {
 protected:
@@ -19,12 +20,17 @@ TEST_F(ReLULayerTest, ForwardPass) {
     inputTensor << -1, 2, -3,
                    4, -5, 6,
                    -7, 8, 9;
+    
+    Eigen::MatrixXd expectedTensor(3, 3);
+    expectedTensor << 0, 2, 0,
+                      4, 0, 6,
+                      0, 8, 9;
 
     // Forward pass
     Eigen::MatrixXd outputTensor = reluLayer.forward(inputTensor);
 
     // Check if the output tensor has non-negative values
-    ASSERT_TRUE((outputTensor.array() >= 0).all());
+    ASSERT_TRUE(outputTensor.isApprox(expectedTensor));
 }
 
 TEST_F(ReLULayerTest, BackwardPass) {

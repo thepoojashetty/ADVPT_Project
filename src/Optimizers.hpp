@@ -8,7 +8,7 @@ class SGD{
         SGD(double);
         ~SGD();
 
-        void updateWeights(Eigen::MatrixXd &, Eigen::MatrixXd &);
+        Eigen::MatrixXd updateWeights(Eigen::MatrixXd &, Eigen::MatrixXd &);
 };
 
 SGD::SGD(){
@@ -21,6 +21,9 @@ SGD::SGD(double learningRate){
 
 SGD::~SGD(){}
 
-void SGD::updateWeights(Eigen::MatrixXd &weights, Eigen::MatrixXd &gradient){
-    weights = weights - learningRate * gradient;
+Eigen::MatrixXd SGD::updateWeights(Eigen::MatrixXd &weights, Eigen::MatrixXd &gradient){
+    // std::cout << "weights: " << weights.row(0).segment(0,7) << std::endl;
+    // std::cout << "gradient: " << gradient.row(0).segment(0,7) << std::endl;
+    // std::cout<<"learningRate: "<<learningRate<<std::endl;
+    return (weights - learningRate * gradient);
 }
