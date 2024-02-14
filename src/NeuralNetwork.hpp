@@ -101,10 +101,11 @@ void NeuralNetwork::train(){
             Eigen::MatrixXd predictedOutput = forward(trainData.getBatch(j));
             // loss
             double loss = celoss.forward(predictedOutput, trainLabels.getBatch(j));
-            std::cout << "epoch: " << i << "\t\titer: " << j << "\t\tloss: " << loss << std::endl;
+            // std::cout << "epoch: " << i << "\t\titer: " << j << "\t\tloss: " << loss << std::endl;
 
             // backward
             Eigen::MatrixXd lossBackward = celoss.backward(trainLabels.getBatch(j));
+            // std::cout << "lossBackward: " << lossBackward << std::endl;
             backward(lossBackward);
             // std::cout<<" - Batch: "<<j<<". Loss: "<<loss<<std::endl;
         }
