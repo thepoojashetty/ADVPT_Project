@@ -11,7 +11,7 @@ private:
     Eigen::MatrixXd weights;
     size_t input_size;
     size_t output_size;
-    double range = 1.0/784;
+    double range = 1.0;
 
     Eigen::MatrixXd input_tensor;
 
@@ -20,8 +20,9 @@ public:
     }
     FullyConnected(size_t in, size_t out) : input_size(in), output_size(out)
     {
-        // weights = Eigen::MatrixXd::Random(input_size+1, output_size);
-        weights = 2.0 * range * Eigen::MatrixXd::Random(input_size + 1, output_size) - Eigen::MatrixXd::Ones(input_size + 1, output_size);
+        range = 1.0 / sqrt(input_size);
+        weights = Eigen::MatrixXd::Random(input_size+1, output_size);
+        weights = weights * range;
     };
 
     void setWeights(Eigen::MatrixXd w) {
